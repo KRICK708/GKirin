@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Pedido</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Formulario de Pedido</h1>
+    
+    <form id="pedido-form">
+        <label for="cliente">Nombre del Cliente:</label>
+        <input type="text" id="cliente" name="cliente" required><br><br>
+
+        <label for="tipo_material">Tipo de Material de la Caja:</label>
+        <input type="range" id="tipo_material" name="tipo_material" min="1" max="3" step="1" list="tipos">
+        <datalist id="tipos">
+            <option value="1" label="Cartón"></option>
+            <option value="2" label="Plástico"></option>
+            <option value="3" label="Madera"></option>
+        </datalist>
+        <br><br>
+
+        <label for="dimension">Dimensión de la Caja:</label><br>
+        <input type="radio" id="diminuta" name="dimension" value="diminuta">
+        <label for="diminuta">Diminuta</label><br>
+        <input type="radio" id="mediana" name="dimension" value="mediana">
+        <label for="mediana">Mediana</label><br>
+        <input type="radio" id="grande" name="dimension" value="grande">
+        <label for="grande">Grande</label><br><br>
+
+        <label for="comentarios">Comentarios:</label><br>
+        <textarea id="comentarios" name="comentarios"></textarea><br><br>
+
+        <button type="submit">Enviar Pedido</button>
+    </form>
+
+    <div id="resumen"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#pedido-form').submit(function(event) {
+                event.preventDefault();
+                
+                var cliente = $('#cliente').val();
+                var tipo_material = $('#tipo_material').val();
+                var dimension = $('input[name="dimension"]:checked').val();
+                var comentarios = $('#comentarios').val();
+
+                var material_text = tipo_material == 1 ? 'Cartón' : tipo_material == 2 ? 'Plástico' : 'Madera';
+
+                var resumen = `
+                    <h3>Resumen del Pedido:</h3>
+                    <p><strong>Cliente:</strong> ${cliente}</p>
+                    <p><strong>Tipo de Material:</strong> ${material_text}</p>
+                    <p><strong>Dimensión:</strong> ${dimension}</p>
+                    <p><strong>Comentarios:</strong> ${comentarios}</p>
+                `;
+                $('#resumen').html(resumen);
+
+                // Enviar datos al servidor si es necesario
+                // $.ajax({
+                //     url: 'procesar_pedido.php',
+                //     type: 'POST',
+                //     data: { cliente, tipo_material, dimension, comentarios },
+                //     success: function(response) {
+                //         // manejar la respuesta del servidor
+                //     }
+                // });
+            });
+        });
+    </script>
+</body>
+</html>
